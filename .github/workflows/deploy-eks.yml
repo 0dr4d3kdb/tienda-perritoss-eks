@@ -96,8 +96,8 @@ jobs:
           kubectl apply -f k8s/backend-deployment.yaml -n $EKS_NAMESPACE
           kubectl apply -f k8s/backend-service.yaml -n $EKS_NAMESPACE
           kubectl set image deployment/tienda-backend \
-            backend=$ECR_REGISTRY/${ECR_REPO_BACKEND}:${IMAGE_TAG} \
-            -n $EKS_NAMESPACE
+            backend=$ECR_REGISTRY/${ECR_REPO_BACKEND}:v1 \
+            -n $EKS_NAMESPACE --record
           kubectl rollout status deployment/tienda-backend -n $EKS_NAMESPACE
 
       # ---------- Actualizar FRONTEND en EKS ----------
