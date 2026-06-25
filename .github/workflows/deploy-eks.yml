@@ -109,8 +109,8 @@ jobs:
           kubectl apply -f k8s/frontend-deployment.yaml -n $EKS_NAMESPACE
           kubectl apply -f k8s/frontend-service.yaml -n $EKS_NAMESPACE
           kubectl set image deployment/tienda-frontend \
-            frontend=$ECR_REGISTRY/${ECR_REPO_FRONTEND}:${IMAGE_TAG} \
-            -n $EKS_NAMESPACE
+            frontend=$ECR_REGISTRY/${ECR_REPO_FRONTEND}:v1 \
+            -n $EKS_NAMESPACE --record
           kubectl rollout status deployment/tienda-frontend -n $EKS_NAMESPACE
 
       # ---------- HPA (si existen los YAML) ----------
