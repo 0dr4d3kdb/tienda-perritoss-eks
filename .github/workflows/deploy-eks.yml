@@ -6,7 +6,6 @@ on:
   workflow_dispatch: {}
 
 env:
-  # Repos de ECR (no son secretos, solo nombres)
   ECR_REPO_FRONTEND: tienda-frontend
   ECR_REPO_BACKEND: tienda-backend
   ECR_REPO_DB: tienda-db
@@ -40,8 +39,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           cd frontend
-          docker build -t $ECR_REGISTRY/${ECR_REPO_FRONTEND}:${IMAGE_TAG} .
-          docker push $ECR_REGISTRY/${ECR_REPO_FRONTEND}:${IMAGE_TAG}
+          docker build -t $ECR_REGISTRY/${ECR_REPO_FRONTEND}:${IMAGE_TAG} \
+                       -t $ECR_REGISTRY/${ECR_REPO_FRONTEND}:v1 .
+          docker push --all-tags $ECR_REGISTRY/${ECR_REPO_FRONTEND}
 
       # ---------- BACKEND ----------
       - name: Build & push BACKEND
@@ -49,8 +49,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           cd backend
-          docker build -t $ECR_REGISTRY/${ECR_REPO_BACKEND}:${IMAGE_TAG} .
-          docker push $ECR_REGISTRY/${ECR_REPO_BACKEND}:${IMAGE_TAG}
+          docker build -t $ECR_REGISTRY/${ECR_REPO_BACKEND}:${IMAGE_TAG} \
+                       -t $ECR_REGISTRY/${ECR_REPO_BACKEND}:v1 .
+          docker push --all-tags $ECR_REGISTRY/${ECR_REPO_BACKEND}
 
       # ---------- DB (opcional) ----------
       - name: Build & push DB
@@ -58,8 +59,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           cd db
-          docker build -t $ECR_REGISTRY/${ECR_REPO_DB}:${IMAGE_TAG} .
-          docker push $ECR_REGISTRY/${ECR_REPO_DB}:${IMAGE_TAG}
+          docker build -t $ECR_REGISTRY/${ECR_REPO_DB}:${IMAGE_TAG} \
+                       -t $ECR_REGISTRY/${ECR_REPO_DB}:v1 .
+          docker push --all-tags $ECR_REGISTRY/${ECR_REPO_DB}
 
       # ---------- Instalar kubectl ----------
       - name: Instalar kubectl
